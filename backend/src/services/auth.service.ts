@@ -1,5 +1,6 @@
 import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/generateToken";
 
 // sign up service with prisma
 export const Signup = {
@@ -27,7 +28,13 @@ export const Signup = {
       },
     });
 
-    return user;
+    const token = generateToken(user.id);
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
   },
 };
 
@@ -55,10 +62,12 @@ export const Login = {
       throw new Error("Invalid email or password");
     }
 
+    const token = generateToken(existingUser.id);
     return {
       id: existingUser.id,
       username: existingUser.username,
       email: existingUser.email,
+      token,
     };
   },
 };
