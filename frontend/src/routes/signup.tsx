@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/signup")({
   component: RouteComponent,
@@ -21,6 +22,8 @@ function RouteComponent() {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (signup.password !== signup.confirmPassword) {
@@ -29,13 +32,20 @@ function RouteComponent() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/signup", {
-        username: signup.username,
-        email: signup.email,
-        password: signup.password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/auth/signup",
+        {
+          username: signup.username,
+          email: signup.email,
+          password: signup.password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
       console.log(response.data);
+      navigate({ to: "/" });
     } catch (error) {
       console.error(error);
     }
