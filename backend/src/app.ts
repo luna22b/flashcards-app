@@ -1,15 +1,27 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import cookieParser from "cookie-parser";
+import { authenticateUser } from "./middleware/authenticateUser";
 
 const app = express();
 
 // makes it so the backend and the frontend can connect
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
 
 app.use(express.json());
 
 // auth routes
 app.use("/auth", authRoutes);
+
+// user routes
+app.use("/api", authenticateUser);
 
 export default app;
