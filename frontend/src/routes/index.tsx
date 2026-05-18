@@ -1,9 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/")({ component: Home });
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { getMe } from "#/api/auth";
 
 import Navbar from "#/components/Navbar";
 import MainText from "#/components/MainText";
+
+export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    const user = await getMe();
+
+    if (user) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
+
+  component: Home,
+});
 
 function Home() {
   return (
