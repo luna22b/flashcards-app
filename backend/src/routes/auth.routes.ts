@@ -15,8 +15,8 @@ router.post("/signup", async (req: Request, res: Response) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -45,8 +45,8 @@ router.post("/login", async (req: Request, res: Response) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -67,9 +67,11 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// mainly for protected pages. it will go through the middleware to check if the token is still valid then
+// it will use prisma to fetch the user information and return as a response
 router.get("/me", authenticateUser, async (req: Request, res: Response) => {
   try {
-    const user = await Me.get(req.body!);
+    const user = await Me.get(req.user!);
 
     res.json(user);
   } catch (err) {

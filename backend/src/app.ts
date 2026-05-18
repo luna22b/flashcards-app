@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
-import { authenticateUser } from "./middleware/authenticateUser";
 
 const app = express();
 
@@ -20,8 +19,5 @@ app.use(express.json());
 
 // auth routes
 app.use("/auth", authRoutes);
-
-// user routes
-app.use("/api", authenticateUser);
 
 export default app;

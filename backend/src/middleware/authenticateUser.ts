@@ -1,9 +1,14 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export const authenticateUser: RequestHandler = (req, res, next) => {
+// checks if token is valid, next function if it is
+export const authenticateUser: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.access_token;
 
     if (!token) {
       return res.status(401).json({ message: "Not authenticated" });
@@ -13,6 +18,7 @@ export const authenticateUser: RequestHandler = (req, res, next) => {
       userId: string;
     };
 
+    // see types.d.ts - very important for this to work (future)
     req.user = decoded.userId;
 
     next();
