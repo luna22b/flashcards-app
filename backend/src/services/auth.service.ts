@@ -82,6 +82,10 @@ export const Me = {
       throw new Error("User not found");
     }
 
-    return user;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
   },
 };
