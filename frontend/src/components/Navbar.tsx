@@ -1,8 +1,22 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuthQuery } from "#/utils/useAuthQuery";
+import { logout } from "#/api/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
-  const { data: user, isLoading } = useAuthQuery();
+  const queryClient = useQueryClient();
+  const { data: user } = useAuthQuery();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+
+    await queryClient.invalidateQueries({
+      queryKey: ["auth"],
+    });
+
+    navigate({ to: "/login" });
+  };
 
   return (
     <div className="border-b border-b-[#ddd]">
@@ -13,8 +27,11 @@ const Navbar = () => {
 
         <div className="hidden sm:flex gap-4">
           {user ? (
-            <button className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer">
-              <div>Logout</div>
+            <button
+              onClick={handleLogout}
+              className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer"
+            >
+              Logout
             </button>
           ) : (
             <>
