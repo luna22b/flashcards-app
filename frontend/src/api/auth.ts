@@ -1,8 +1,29 @@
-export async function getMe() {
-  const res = await fetch("http://localhost:5000/auth/me", {
-    credentials: "include",
-  });
+import axios from "axios";
 
-  if (!res.ok) return null;
-  return res.json();
-}
+export const getMe = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/auth/me", {
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch {
+    return null;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/auth/logout",
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+
+    return res.data;
+  } catch {
+    return null;
+  }
+};
