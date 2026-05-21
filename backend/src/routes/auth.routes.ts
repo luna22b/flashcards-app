@@ -79,4 +79,20 @@ router.get("/me", authenticateUser, async (req: Request, res: Response) => {
   }
 });
 
+router.post("/logout", async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({
+      message: "Logged out successfully.",
+    });
+  } catch (err) {
+    res.status(400).json({ message: "Error has occurred." });
+  }
+});
+
 export default router;
