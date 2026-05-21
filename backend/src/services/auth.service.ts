@@ -4,10 +4,9 @@ import bcrypt from "bcrypt";
 // sign up service with prisma
 export const Signup = {
   async signup(data: { username: string; email: string; password: string }) {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findFirst({
       where: {
-        email: data.email,
-        username: data.username,
+        OR: [{ email: data.email }, { username: data.username }],
       },
     });
 
