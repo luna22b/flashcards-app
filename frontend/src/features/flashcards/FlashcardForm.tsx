@@ -17,11 +17,6 @@ export default function FlashcardForm() {
       });
 
       console.log(newFlashcard);
-
-      setFlashcards({
-        front: "",
-        back: "",
-      });
     } catch (error) {
       console.error(error);
     }
