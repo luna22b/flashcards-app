@@ -7,13 +7,13 @@ export const Route = createFileRoute("/login")({
   component: RouteComponent,
 });
 
-interface login {
+interface Login {
   identifier: string;
   password: string;
 }
 
 function RouteComponent() {
-  const [login, setLogin] = useState<login>({
+  const [login, setLogin] = useState<Login>({
     identifier: "",
     password: "",
   });
