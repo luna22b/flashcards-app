@@ -79,6 +79,7 @@ router.get("/me", authenticateUser, async (req: Request, res: Response) => {
   }
 });
 
+// log out functionality
 router.post("/logout", async (req: Request, res: Response) => {
   try {
     res.clearCookie("access_token", {
