@@ -1,8 +1,8 @@
 import { createFlashcard } from "#/api/flashcard-api";
 import { useState } from "react";
-import type { CreateFlashcardInput } from "./types";
+import type { CreateFlashcardInput, FlashcardFormProps } from "./types";
 
-export default function FlashcardForm() {
+export default function FlashcardForm({ onCardCreated }: FlashcardFormProps) {
   const [flashcards, setFlashcards] = useState<CreateFlashcardInput>({
     front: "",
     back: "",
@@ -11,12 +11,17 @@ export default function FlashcardForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const newFlashcard = await createFlashcard({
+      const response = await createFlashcard({
         front: flashcards.front,
         back: flashcards.back,
       });
+      const newFlashcard = response.data;
+      onCardCreated(newFlashcard);
 
-      console.log(newFlashcard);
+      setFlashcards({
+        front: "",
+        back: "",
+      });
     } catch (error) {
       console.error(error);
     }
