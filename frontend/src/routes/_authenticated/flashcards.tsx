@@ -24,17 +24,23 @@ function RouteComponent() {
     description: "",
   });
 
+  // initialized with two flashcards at the start so that the user has two flashcards to work with
+  // automatically
   const [flashcards, setFlashcards] = useState<Flashcard[]>([
     { id: crypto.randomUUID(), front: "Hello", back: "Back" },
     { id: crypto.randomUUID(), front: "Hi", back: "Front" },
   ]);
 
+  // handles the adding of a flashcard by adding a new object to the state
   const handleAddFlashcard = () => {
     const newFlashcard = { id: crypto.randomUUID(), front: "What", back: "No" };
     setFlashcards([...flashcards, newFlashcard]);
   };
 
-  const handleDeleteFlashcard = () => {};
+  // handles deletion by filtering the id of the card that was clicked on
+  const handleDeleteFlashcard = (id: string) => {
+    setFlashcards((c) => c.filter((card) => card.id !== id));
+  };
 
   return (
     <div>
@@ -72,7 +78,10 @@ function RouteComponent() {
         <ul>
           {flashcards.map((card) => (
             <li key={card.id}>
-              <FlashcardField card={card} />
+              <FlashcardField
+                card={card}
+                onClick={() => handleDeleteFlashcard(card.id)}
+              />
             </li>
           ))}
         </ul>
