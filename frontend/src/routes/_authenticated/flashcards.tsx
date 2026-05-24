@@ -1,93 +1,85 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import axios from "axios";
-import type { CreateFlashcardInput } from "#/features/flashcards/types";
 import Navbar from "#/components/Navbar";
+import { useState } from "react";
+import { FlashcardField } from "#/features/flashcards/FlashcardField";
 
 export const Route = createFileRoute("/_authenticated/flashcards")({
   component: RouteComponent,
 });
 
-function RouteComponent() {
-  const { user } = Route.useRouteContext() as { user: { username: string } };
+interface Flashcard {
+  id: string;
+  front: string;
+  back: string;
+}
 
-  const [flashcards, setFlashcards] = useState<CreateFlashcardInput>({
-    front: "",
-    back: "",
+interface FlashcardSetForm {
+  title: string;
+  description: string;
+}
+
+function RouteComponent() {
+  const [titleAndDesc, setTitleAndDesc] = useState<FlashcardSetForm>({
+    title: "",
+    description: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [flashcards, setFlashcards] = useState<Flashcard[]>([
+    { id: crypto.randomUUID(), front: "Hello", back: "Back" },
+    { id: crypto.randomUUID(), front: "Hi", back: "Front" },
+  ]);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/flashcards",
-        flashcards,
-        {
-          withCredentials: true,
-        },
-      );
-
-      console.log("FLASHCARD CREATED:", response.data);
-
-      setFlashcards({
-        front: "",
-        back: "",
-      });
-    } catch (error) {
-      console.error("CREATE FLASHCARD ERROR:", error);
-    }
+  const handleAddFlashcard = () => {
+    const newFlashcard = { id: crypto.randomUUID(), front: "What", back: "No" };
+    setFlashcards([...flashcards, newFlashcard]);
   };
+
+  const handleDeleteFlashcard = () => {};
 
   return (
     <div>
       <Navbar />
-
-      <div className="mt-10 ml-80 font-bold text-xl">
-        Welcome to your flashcards, {user.username}!
-      </div>
-
-      <div className="mt-2 ml-75 text-gray-600">
-        Start by creating your first flashcard below.
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="ml-85 mt-25">Type your title</div>
-
-        <input
-          type="text"
-          value={flashcards.front}
-          onChange={(e) =>
-            setFlashcards({
-              ...flashcards,
-              front: e.target.value,
-            })
-          }
-          className="border p-2 rounded bg-amber-100 ml-80"
-          required
-        />
-
-        <div className="ml-80 mt-10">Type the description</div>
-
-        <textarea
-          value={flashcards.back}
-          onChange={(e) =>
-            setFlashcards({
-              ...flashcards,
-              back: e.target.value,
-            })
-          }
-          className="rounded bg-amber-100 ml-75 w-80 h-40 border p-4"
-          required
-        />
-
-        <button
-          type="submit"
-          className="mt-10 ml-95 bg-black text-white rounded-sm p-2 cursor-pointer"
-        >
-          Create flashcard
-        </button>
+      <div className="text-xl mt-10 ml-20">Create a new flashcard set</div>
+      <form className="ml-20">
+        <div className="mt-10 mb-2">
+          <input
+            type="text"
+            value={titleAndDesc.title}
+            onChange={(e) =>
+              setTitleAndDesc((prev) => ({ ...prev, title: e.target.value }))
+            }
+            placeholder="Title"
+            required
+            className="w-[50em] border"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            value={titleAndDesc.description}
+            onChange={(e) =>
+              setTitleAndDesc((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+            placeholder="Description"
+            className="w-[50em] border"
+          />
+        </div>
       </form>
+      <div>
+        <ul>
+          {flashcards.map((card) => (
+            <li key={card.id}>
+              <FlashcardField card={card} />
+            </li>
+          ))}
+        </ul>
+        <button onClick={handleAddFlashcard} className="ml-20 cursor-pointer">
+          Add new flashcard
+        </button>
+      </div>
     </div>
   );
 }
