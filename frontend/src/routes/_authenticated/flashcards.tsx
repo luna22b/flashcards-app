@@ -7,6 +7,7 @@ export const Route = createFileRoute("/_authenticated/flashcards")({
   component: RouteComponent,
 });
 
+// interfaces
 interface Flashcard {
   id: string;
   front: string;
