@@ -4,6 +4,8 @@ import { logout } from "#/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
+  // used queries to check if the user is logged out or not. if they are, display the login button.
+  // if they are not logged out, display the log out button
   const queryClient = useQueryClient();
   const { data: user } = useAuthQuery();
   const navigate = useNavigate();
@@ -18,11 +20,20 @@ const Navbar = () => {
     navigate({ to: "/login" });
   };
 
+  const handleClick = () => {
+    navigate({ to: "/" });
+  };
+
   return (
     <div className="border-b border-b-[#ddd]">
       <div className="h-20 flex justify-between items-center max-w-[90em] px-10 mx-auto">
         <div className="flex gap-5">
-          <div className="font-semibold text-black">Study</div>
+          <div
+            className="font-semibold text-black cursor-pointer"
+            onClick={handleClick}
+          >
+            Study
+          </div>
         </div>
 
         <div className="hidden sm:flex gap-4">
