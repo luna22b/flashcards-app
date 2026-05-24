@@ -4,13 +4,19 @@ type Props = {
     front: string;
     back: string;
   };
+  onClick: () => void;
 };
 
-export function FlashcardField({ card }: Props) {
+export function FlashcardField({ card, onClick }: Props) {
   return (
     <div>
       <div className="ml-20 mt-5 w-[50em] h-20 border">
-        {card.front} - {card.back}
+        {card.front} {card.back}
+        <div>
+          <button onClick={onClick} className="cursor-pointer">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   );
