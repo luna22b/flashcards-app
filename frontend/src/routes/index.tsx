@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
 
     if (user) {
       throw redirect({
-        to: "/dashboard",
+        to: "/flashcards",
       });
     }
   },
