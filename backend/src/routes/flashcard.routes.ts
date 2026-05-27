@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { authenticateUser } from "../middleware/authenticateUser";
 import { NewFlashcardSet } from "../services/flashcard.service";
+import { getFlashcardSets } from "../services/flashcard.service";
 
 const router = Router();
 
@@ -11,12 +12,32 @@ router.post(
     try {
       const set = await NewFlashcardSet.newSet({
         ...req.body,
-        userId: req.user!.id,
+        userId: req.user!,
       });
+
+      console.log(set);
 
       res.json(set);
     } catch (err) {
-      res.status(400).json({ message: "Failed to create set" });
+      console.error(err);
+      res.status(400).json({
+        message: "Failed to create set",
+        error: err,
+      });
+    }
+  },
+);
+
+router.get(
+  "/flashcards",
+  authenticateUser,
+  async (req: Request, res: Response) => {
+    try {
+      const getSets = await getFlashcardSets.getSet(req.user!);
+
+      res.json(getSets);
+    } catch (err) {
+      res.status(404).json({ message: "User not found" });
     }
   },
 );
