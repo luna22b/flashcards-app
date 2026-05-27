@@ -48,3 +48,18 @@ export const getFlashcardSets = {
     return getFlashcards;
   },
 };
+
+export const userCards = {
+  async getSpecificSet(userId: string, setId: string) {
+    const getCard = await prisma.flashcardSet.findFirst({
+      where: { userId, id: setId },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        flashcards: true,
+      },
+    });
+    return getCard;
+  },
+};
