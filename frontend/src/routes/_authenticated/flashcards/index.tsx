@@ -14,23 +14,29 @@ export const Route = createFileRoute("/_authenticated/flashcards/")({
 
 function RouteComponent() {
   const navigate = useNavigate();
-  const { user } = Route.useRouteContext() as { user: { username: string } };
   const { flashcards } = Route.useRouteContext();
 
   return (
     <div>
       <Navbar />
-      <div>Welcome {user.username}!</div>
-      <div>
-        These are all your flashcards! To make a new flashcard, create a new set
-        below!
+      <div className="mt-6 font-bold text-2xl flex justify-center">
+        All Flashcards
       </div>
+      <div className="text-center mt-2">
+        To make a new flashcard, create a new set below!
+      </div>
+      <button
+        onClick={() => navigate({ to: "/flashcards/create" })}
+        className="text-white bg-black rounded-lg cursor-pointer flex mx-auto w-40 justify-center mt-5 h-10 items-center"
+      >
+        Create a new set
+      </button>
 
-      <div className="gap-5 grid mt-20 ml-5 cursor-pointer">
+      <div className="gap-3 grid mt-15 cursor-pointer place-items-center">
         {flashcards.map((card: any) => (
           <div
             key={card.id}
-            className="border w-[40em]"
+            className="border w-[21em] h-25 flex justify-content rounded-lg font-bold"
             onClick={() =>
               navigate({
                 to: "/flashcards/$setId",
@@ -40,17 +46,15 @@ function RouteComponent() {
               })
             }
           >
-            {card.title}
+            <div className="p-2 mt-2">
+              <div>{card.title}</div>
+              <div className="font-normal text-sm">
+                {card.flashcards.length} Terms
+              </div>
+            </div>
           </div>
         ))}
       </div>
-
-      <button
-        onClick={() => navigate({ to: "/flashcards/create" })}
-        className="text-white bg-black rounded-xl mt-50 ml-50 cursor-pointer"
-      >
-        Create a new set
-      </button>
     </div>
   );
 }

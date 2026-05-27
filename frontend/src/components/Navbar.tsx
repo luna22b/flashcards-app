@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <div className="border-b border-b-[#ddd]">
-      <div className="h-20 flex justify-between items-center max-w-[90em] px-10 mx-auto">
+      <div className="h-20 flex justify-between items-center max-w-[90em] ml-3 mx-auto">
         <div className="flex gap-5">
           <div
             className="font-semibold text-black cursor-pointer"
