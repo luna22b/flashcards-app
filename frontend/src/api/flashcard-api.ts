@@ -5,7 +5,20 @@ export const getFlashcards = async () => {
     const res = await axios.get("http://localhost:5000/api/flashcards", {
       withCredentials: true,
     });
-    console.log(res);
+    return res.data;
+  } catch {
+    return null;
+  }
+};
+
+export const getSpecificCard = async (setId: string) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:5000/api/flashcards/${setId}`,
+      {
+        withCredentials: true,
+      },
+    );
     return res.data;
   } catch {
     return null;
