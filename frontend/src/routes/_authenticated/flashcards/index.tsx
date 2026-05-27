@@ -28,7 +28,18 @@ function RouteComponent() {
 
       <div className="gap-5 grid mt-20 ml-5 cursor-pointer">
         {flashcards.map((card: any) => (
-          <div key={card.id} className="border w-[40em]">
+          <div
+            key={card.id}
+            className="border w-[40em]"
+            onClick={() =>
+              navigate({
+                to: "/flashcards/$setId",
+                params: {
+                  setId: card.id,
+                },
+              })
+            }
+          >
             {card.title}
           </div>
         ))}
