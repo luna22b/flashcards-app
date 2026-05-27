@@ -45,7 +45,7 @@ function RouteComponent() {
       );
 
       console.log(response.data);
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/flashcards" });
       // once the handleSubmit runs and the user successfully logs in, re render and navigate back to home
       // so that the page can display the user's contents
     } catch (error) {
