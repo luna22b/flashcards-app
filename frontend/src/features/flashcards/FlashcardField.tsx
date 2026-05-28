@@ -1,3 +1,5 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
+
 type Props = {
   card: {
     id: string;
@@ -10,33 +12,33 @@ type Props = {
 
 export function FlashcardField({ card, onClick, onUpdate }: Props) {
   return (
-    <div>
-      <div className="mt-5 w-[50em] h-25 border">
-        <div>
-          <input
-            type="text"
-            value={card.front}
-            onChange={(e) => onUpdate("front", e.target.value)}
-            className="border w-full p-1"
-            placeholder="Enter term"
-          />
-        </div>
+    <div className="border mt-5 h-50 rounded-lg w-[21em]">
+      <div>
+        <input
+          type="text"
+          value={card.front}
+          onChange={(e) => onUpdate("front", e.target.value)}
+          className="w-[20em] p-4 mt-5 border flex mx-auto rounded-sm"
+          placeholder="Enter term"
+        />
+      </div>
 
-        <div>
-          <input
-            type="text"
-            value={card.back}
-            onChange={(e) => onUpdate("back", e.target.value)}
-            className="border w-full p-1"
-            placeholder="Enter definition"
-          />
-        </div>
+      <div>
+        <input
+          type="text"
+          value={card.back}
+          onChange={(e) => onUpdate("back", e.target.value)}
+          className="w-[20em] p-4 mt-5 border flex mx-auto rounded-sm"
+          placeholder="Enter definition"
+        />
+      </div>
 
-        <div>
-          <button type="button" onClick={onClick} className="cursor-pointer">
-            Delete
-          </button>
-        </div>
+      <div>
+        <TrashIcon
+          type="button"
+          onClick={onClick}
+          className="cursor-pointer size-5 mx-auto mt-3"
+        />
       </div>
     </div>
   );

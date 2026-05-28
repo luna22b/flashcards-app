@@ -20,10 +20,10 @@ function RouteComponent() {
     <div>
       <Navbar />
       <div className="mt-6 font-bold text-2xl flex justify-center">
-        All Flashcards
+        All Flashcard Sets
       </div>
-      <div className="text-center mt-2">
-        To make a new flashcard, create a new set below!
+      <div className="text-center mt-2 w-75 mx-auto">
+        To create a new flashcard set, click the button below!
       </div>
       <button
         onClick={() => navigate({ to: "/flashcards/create" })}
@@ -32,11 +32,11 @@ function RouteComponent() {
         Create a new set
       </button>
 
-      <div className="gap-3 grid mt-15 cursor-pointer place-items-center">
+      <div className="gap-3 grid mt-15 cursor-pointer place-items-center mb-5">
         {flashcards.map((card: any) => (
           <div
             key={card.id}
-            className="border w-[21em] h-25 flex justify-content rounded-lg font-bold"
+            className="border-2 w-[21em] sm:w-[25em] h-25 flex justify-content rounded-lg font-bold"
             onClick={() =>
               navigate({
                 to: "/flashcards/$setId",
