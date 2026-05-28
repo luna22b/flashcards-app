@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <div className="border-b border-b-[#ddd]">
-      <div className="h-20 flex justify-between items-center max-w-[90em] ml-3 mx-auto">
+      <div className="h-20 flex justify-between items-center max-w-[85em] mx-auto px-3">
         <div className="flex gap-5">
           <div
             className="font-semibold text-black cursor-pointer"
@@ -40,17 +40,17 @@ const Navbar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer"
+              className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer border border-black"
             >
               Logout
             </button>
           ) : (
             <>
-              <button className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer">
+              <button className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
                 <Link to="/login">Log in</Link>
               </button>
 
-              <button className="bg-black text-white w-18 h-10 rounded-xl cursor-pointer">
+              <button className="bg-black text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
                 <Link to="/signup">Sign up</Link>
               </button>
             </>
