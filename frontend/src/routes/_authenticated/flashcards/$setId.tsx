@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Navbar from "#/components/Navbar";
 import { getSpecificCard } from "#/api/flashcard-api";
+import { useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export const Route = createFileRoute("/_authenticated/flashcards/$setId")({
   loader: async ({ params }) => {
@@ -15,11 +17,67 @@ export const Route = createFileRoute("/_authenticated/flashcards/$setId")({
 function RouteComponent() {
   const flashcardSet = Route.useLoaderData();
 
+  const [currentCard, setCurrentCard] = useState(0);
+
+  const [isFlipped, setIsFlipped] = useState(true);
+
+  const handleIncrement = () => {
+    if (currentCard === flashcardSet.flashcards.length - 1) {
+      setCurrentCard(0);
+    } else {
+      setCurrentCard(currentCard + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (currentCard === 0) {
+      setCurrentCard(flashcardSet.flashcards.length - 1);
+    } else {
+      setCurrentCard(currentCard - 1);
+    }
+  };
+  const card = flashcardSet.flashcards[currentCard];
+
+  const handleCardFlip = () => {
+    if (isFlipped) {
+      setIsFlipped(false);
+    } else {
+      setIsFlipped(true);
+    }
+  };
+
   return (
     <div>
       <Navbar />
-
-      <div>{flashcardSet.title}</div>
+      <div className="mt-6 font-bold text-2xl flex justify-center">
+        {flashcardSet.title}
+      </div>
+      <div className="mt-3 text-sm flex justify-center">
+        {flashcardSet.description}
+      </div>
+      <div className="flex flex-col">
+        <div className="flex justify-center">
+          <div
+            className="bg-gray-700 text-white mt-6 h-55 w-[21em] rounded-lg border-2 border-black text-center font-bold cursor-pointer flex justify-center items-center"
+            onClick={handleCardFlip}
+          >
+            {isFlipped ? <div>{card.front}</div> : <div>{card.back}</div>}
+          </div>
+        </div>
+        <div className="flex justify-center gap-5 mt-2">
+          <ChevronLeftIcon
+            onClick={handleDecrement}
+            className="size-7 bg-gray-300 rounded-xl cursor-pointer"
+          />
+          <p className="font-bold flex justify-center items-center">
+            {currentCard + 1} / {flashcardSet.flashcards.length}
+          </p>
+          <ChevronRightIcon
+            onClick={handleIncrement}
+            className="size-7 bg-gray-300 rounded-xl cursor-pointer"
+          />
+        </div>
+      </div>
     </div>
   );
 }
