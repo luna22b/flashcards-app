@@ -77,6 +77,17 @@ function RouteComponent() {
             className="size-7 bg-gray-300 rounded-xl cursor-pointer"
           />
         </div>
+        <div className="flex flex-col items-center justify-center mt-10 gap-5">
+          {flashcardSet.flashcards.map((card: any) => (
+            <div
+              key={card.id}
+              className="bg-gray-700 text-white rounded-lg w-[27em] text-center h-55 border-4 border-black"
+            >
+              <div>{card.front}</div>
+              <div>{card.back}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
