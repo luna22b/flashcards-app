@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useAuthQuery } from "#/utils/useAuthQuery";
+import { useNavigate } from "@tanstack/react-router";
 import { logout } from "#/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { Bars3Icon } from "@heroicons/react/24/solid";
+import NavElements from "./NavElements";
 
 const Navbar = () => {
   // used queries to check if the user is logged out or not. if they are, display the login button.
   // if they are not logged out, display the log out button
   const queryClient = useQueryClient();
-  const { data: user } = useAuthQuery();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -35,26 +35,11 @@ const Navbar = () => {
             Study
           </div>
         </div>
-
-        <div className="hidden sm:flex gap-4">
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer border border-black"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <button className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
-                <Link to="/login">Log in</Link>
-              </button>
-
-              <button className="bg-black text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
-                <Link to="/signup">Sign up</Link>
-              </button>
-            </>
-          )}
+        <div>
+          <Bars3Icon className="sm:hidden size-6" />
+          <div className="hidden sm:flex gap-4">
+            <NavElements onLogout={handleLogout} />
+          </div>
         </div>
       </div>
     </div>
