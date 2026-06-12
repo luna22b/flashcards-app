@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
+import Navbar from "#/components/Navbar";
 
 export const Route = createFileRoute("/signup")({
   component: RouteComponent,
@@ -55,6 +56,7 @@ function RouteComponent() {
 
   return (
     <div>
+      <Navbar />
       <form onSubmit={handleSubmit}>
         <input
           type="username"
