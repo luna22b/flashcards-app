@@ -15,7 +15,8 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedFlashcardsIndexRouteImport } from './routes/_authenticated/flashcards/index'
 import { Route as AuthenticatedFlashcardsCreateRouteImport } from './routes/_authenticated/flashcards/create'
-import { Route as AuthenticatedFlashcardsSetIdRouteImport } from './routes/_authenticated/flashcards/$setId'
+import { Route as AuthenticatedFlashcardsSetIdIndexRouteImport } from './routes/_authenticated/flashcards/$setId/index'
+import { Route as AuthenticatedFlashcardsSetIdTestRouteImport } from './routes/_authenticated/flashcards/$setId/test'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -48,10 +49,16 @@ const AuthenticatedFlashcardsCreateRoute =
     path: '/flashcards/create',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedFlashcardsSetIdRoute =
-  AuthenticatedFlashcardsSetIdRouteImport.update({
-    id: '/flashcards/$setId',
-    path: '/flashcards/$setId',
+const AuthenticatedFlashcardsSetIdIndexRoute =
+  AuthenticatedFlashcardsSetIdIndexRouteImport.update({
+    id: '/flashcards/$setId/',
+    path: '/flashcards/$setId/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedFlashcardsSetIdTestRoute =
+  AuthenticatedFlashcardsSetIdTestRouteImport.update({
+    id: '/flashcards/$setId/test',
+    path: '/flashcards/$setId/test',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -59,17 +66,19 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/flashcards/$setId': typeof AuthenticatedFlashcardsSetIdRoute
   '/flashcards/create': typeof AuthenticatedFlashcardsCreateRoute
   '/flashcards/': typeof AuthenticatedFlashcardsIndexRoute
+  '/flashcards/$setId/test': typeof AuthenticatedFlashcardsSetIdTestRoute
+  '/flashcards/$setId/': typeof AuthenticatedFlashcardsSetIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/flashcards/$setId': typeof AuthenticatedFlashcardsSetIdRoute
   '/flashcards/create': typeof AuthenticatedFlashcardsCreateRoute
   '/flashcards': typeof AuthenticatedFlashcardsIndexRoute
+  '/flashcards/$setId/test': typeof AuthenticatedFlashcardsSetIdTestRoute
+  '/flashcards/$setId': typeof AuthenticatedFlashcardsSetIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,9 +86,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/_authenticated/flashcards/$setId': typeof AuthenticatedFlashcardsSetIdRoute
   '/_authenticated/flashcards/create': typeof AuthenticatedFlashcardsCreateRoute
   '/_authenticated/flashcards/': typeof AuthenticatedFlashcardsIndexRoute
+  '/_authenticated/flashcards/$setId/test': typeof AuthenticatedFlashcardsSetIdTestRoute
+  '/_authenticated/flashcards/$setId/': typeof AuthenticatedFlashcardsSetIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,26 +97,29 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
-    | '/flashcards/$setId'
     | '/flashcards/create'
     | '/flashcards/'
+    | '/flashcards/$setId/test'
+    | '/flashcards/$setId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/signup'
-    | '/flashcards/$setId'
     | '/flashcards/create'
     | '/flashcards'
+    | '/flashcards/$setId/test'
+    | '/flashcards/$setId'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/signup'
-    | '/_authenticated/flashcards/$setId'
     | '/_authenticated/flashcards/create'
     | '/_authenticated/flashcards/'
+    | '/_authenticated/flashcards/$setId/test'
+    | '/_authenticated/flashcards/$setId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -160,26 +173,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFlashcardsCreateRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/flashcards/$setId': {
-      id: '/_authenticated/flashcards/$setId'
+    '/_authenticated/flashcards/$setId/': {
+      id: '/_authenticated/flashcards/$setId/'
       path: '/flashcards/$setId'
-      fullPath: '/flashcards/$setId'
-      preLoaderRoute: typeof AuthenticatedFlashcardsSetIdRouteImport
+      fullPath: '/flashcards/$setId/'
+      preLoaderRoute: typeof AuthenticatedFlashcardsSetIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/flashcards/$setId/test': {
+      id: '/_authenticated/flashcards/$setId/test'
+      path: '/flashcards/$setId/test'
+      fullPath: '/flashcards/$setId/test'
+      preLoaderRoute: typeof AuthenticatedFlashcardsSetIdTestRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedFlashcardsSetIdRoute: typeof AuthenticatedFlashcardsSetIdRoute
   AuthenticatedFlashcardsCreateRoute: typeof AuthenticatedFlashcardsCreateRoute
   AuthenticatedFlashcardsIndexRoute: typeof AuthenticatedFlashcardsIndexRoute
+  AuthenticatedFlashcardsSetIdTestRoute: typeof AuthenticatedFlashcardsSetIdTestRoute
+  AuthenticatedFlashcardsSetIdIndexRoute: typeof AuthenticatedFlashcardsSetIdIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedFlashcardsSetIdRoute: AuthenticatedFlashcardsSetIdRoute,
   AuthenticatedFlashcardsCreateRoute: AuthenticatedFlashcardsCreateRoute,
   AuthenticatedFlashcardsIndexRoute: AuthenticatedFlashcardsIndexRoute,
+  AuthenticatedFlashcardsSetIdTestRoute: AuthenticatedFlashcardsSetIdTestRoute,
+  AuthenticatedFlashcardsSetIdIndexRoute:
+    AuthenticatedFlashcardsSetIdIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
