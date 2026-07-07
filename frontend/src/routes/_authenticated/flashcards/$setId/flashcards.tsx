@@ -15,5 +15,9 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-  return <div></div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }
