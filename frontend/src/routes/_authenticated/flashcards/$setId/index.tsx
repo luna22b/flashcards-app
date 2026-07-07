@@ -93,8 +93,18 @@ function RouteComponent() {
           >
             Test
           </button>
-          <button className="bg-gray-500 p-4 rounded-lg text-center cursor-pointer text-white font-bold">
-            Learn
+          <button
+            onClick={() =>
+              navigate({
+                to: "/flashcards/$setId/flashcards",
+                params: {
+                  setId,
+                },
+              })
+            }
+            className="bg-gray-500 p-4 rounded-lg text-center cursor-pointer text-white font-bold"
+          >
+            Flashcards
           </button>
         </div>
         <div className="flex flex-col items-center justify-center mt-10 gap-5">
