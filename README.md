@@ -5,9 +5,7 @@ import documents and use AI to create flashcards. Some features it will include:
 
 - Import documents
 - Test Mode
-- Learn Mode
 - Normal Flashcards Mode
-- "Similar Exam" Mode
 
 ... etc.
 
