@@ -57,7 +57,6 @@ function RouteComponent() {
       return {
         id: currentCard.id,
         question: currentCard.back,
-        answer: currentCard.front,
         choices: shuffledChoices,
         correctAnswer: currentCard.front,
         selectedAnswer: null,
@@ -116,17 +115,41 @@ function RouteComponent() {
               {question.choices.map((choice: string) => (
                 <button
                   key={choice}
-                  className="bg-blue-500 p-3 rounded-lg hover:bg-blue-600 cursor-pointer"
-                  onClick={() => console.log(choice)}
+                  className={`p-3 rounded-lg cursor-pointer ${
+                    submitQuiz
+                      ? choice === question.correctAnswer
+                        ? "bg-green-500"
+                        : choice === question.selectedAnswer
+                          ? "bg-red-500"
+                          : "bg-blue-500"
+                      : "bg-blue-500 hover:bg-blue-600"
+                  }`}
+                  onClick={() => {
+                    if (submitQuiz) return;
+
+                    setQuestions((prevQuestions) =>
+                      prevQuestions.map((q) =>
+                        q.id === question.id
+                          ? { ...q, selectedAnswer: choice }
+                          : q,
+                      ),
+                    );
+                  }}
                 >
                   {choice}
                 </button>
               ))}
             </div>
+            {submitQuiz && question.selectedAnswer === null && (
+              <div className="mt-3 text-yellow-400 font-bold justify-center flex">
+                Question skipped
+              </div>
+            )}
           </div>
         ))}
         <button
           className="rounded-lg bg-green-300 p-2"
+          disabled={submitQuiz}
           onClick={() => setSubmitQuiz(true)}
         >
           Submit Quiz
