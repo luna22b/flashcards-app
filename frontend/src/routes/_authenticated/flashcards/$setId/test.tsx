@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getSpecificCard } from "#/api/flashcard-api";
+import { useState } from "react";
 import Navbar from "#/components/Navbar";
 
 export const Route = createFileRoute("/_authenticated/flashcards/$setId/test")({
@@ -14,50 +15,122 @@ export const Route = createFileRoute("/_authenticated/flashcards/$setId/test")({
 
 function RouteComponent() {
   const flashcardSet = Route.useLoaderData();
+  const [isStart, setIsStart] = useState(false);
+  const [questionAmount, setQuestionAmount] = useState("");
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [submitQuiz, setSubmitQuiz] = useState(false);
+  const amount = Number(questionAmount);
 
-  const quizQuestions = flashcardSet.flashcards.map((currentCard: any) => {
-    // disallows duplication
-    const otherCards = flashcardSet.flashcards.filter(
-      (card: any) => card.id !== currentCard.id,
-    );
+  function generateQuiz(amount: number) {
+    // shuffles the cards using the Fisher-Yates algorithm
+    const shuffleArray = (arrayToShuffle: any[]) => {
+      const cards = [...arrayToShuffle];
 
-    // shuffles the cards
-    const shuffledCards = [...otherCards].sort(() => Math.random() - 0.5);
-
-    // makes it so it only gives me 3 distractors (will be 2 if the flashcard set has 3 cards)
-    const distractors = shuffledCards.slice(0, 3);
-
-    // we only want the front of the card in our array
-    const distractorFronts = distractors.map((card: any) => card.front);
-
-    // makes an array and returns the choices. the correct card with all the distractors
-    // we randomize it so that the right answers isn't always first
-    const choices = [currentCard.front, ...distractorFronts].sort(
-      () => Math.random() - 0.5,
-    );
-
-    return {
-      id: currentCard.id,
-      question: currentCard.back,
-      choices,
-      correctAnswer: currentCard.front,
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      return cards;
     };
-  });
 
-  console.log("hi: ", quizQuestions);
+    const shuffledFlashcards = shuffleArray(flashcardSet.flashcards);
+
+    // selected cards based on the amount of cards the user entered to test
+    const selectedCards = shuffledFlashcards.slice(0, amount);
+
+    // maps over the selected cards and creates a new array without current card
+    return selectedCards.map((currentCard: any) => {
+      const otherCards = flashcardSet.flashcards.filter(
+        (card: any) => card.id !== currentCard.id,
+      );
+
+      const shuffledCards = shuffleArray(otherCards);
+
+      const distractors = shuffledCards.slice(0, 3);
+
+      const distractorChoices = distractors.map((card) => card.front);
+
+      const choices = [currentCard.front, ...distractorChoices];
+
+      const shuffledChoices = shuffleArray(choices);
+
+      return {
+        id: currentCard.id,
+        question: currentCard.back,
+        answer: currentCard.front,
+        choices: shuffledChoices,
+        correctAnswer: currentCard.front,
+        selectedAnswer: null,
+      };
+    });
+  }
+
+  if (!isStart) {
+    const maxQuestions = Math.min(25, flashcardSet.flashcards.length);
+    return (
+      <div>
+        <Navbar />
+        <div>Enter number of questions (max {maxQuestions})</div>
+        <input
+          type="number"
+          value={questionAmount}
+          onChange={(e) => setQuestionAmount(e.target.value)}
+        />
+        <button
+          onClick={() => {
+            if (amount < 1 || amount > maxQuestions) {
+              alert(`Please enter a number between 1 and ${maxQuestions}.`);
+              return;
+            }
+
+            const quiz = generateQuiz(amount);
+
+            console.log(quiz);
+
+            setQuestions(quiz);
+
+            setIsStart(true);
+          }}
+        >
+          Start test
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center mt-10 gap-5">
-        {quizQuestions.map((card: any) => (
+
+      <div className="flex flex-col items-center gap-5 mt-10">
+        {questions.map((question: any) => (
           <div
-            key={card.id}
-            className="bg-gray-700 text-white rounded-lg w-[27em] text-center h-55 border-4 border-black"
+            key={question.id}
+            className="bg-gray-700 text-white rounded-lg p-5 w-108 border-4 border-black"
           >
-            <button>{card.choices}</button>
+            <h3 className="text-lg font-bold mb-4 text-center">
+              {question.question}
+            </h3>
+
+            <div className="grid grid-cols-2 gap-3">
+              {question.choices.map((choice: string) => (
+                <button
+                  key={choice}
+                  className="bg-blue-500 p-3 rounded-lg hover:bg-blue-600 cursor-pointer"
+                  onClick={() => console.log(choice)}
+                >
+                  {choice}
+                </button>
+              ))}
+            </div>
           </div>
         ))}
+        <button
+          className="rounded-lg bg-green-300 p-2"
+          onClick={() => setSubmitQuiz(true)}
+        >
+          Submit Quiz
+        </button>
       </div>
     </div>
   );
