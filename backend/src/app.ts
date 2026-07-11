@@ -13,7 +13,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:4173",
-      process.env.FRONTEND_URL!,
+      "https://frontend-ruyg.onrender.com",
     ],
     credentials: true,
   }),
