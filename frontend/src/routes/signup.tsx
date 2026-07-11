@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
 import Navbar from "#/components/Navbar";
+import { API_URL } from "#/api";
 
 export const Route = createFileRoute("/signup")({
   component: RouteComponent,
@@ -47,7 +48,7 @@ function RouteComponent() {
 
     try {
       await axios.post(
-        "http://localhost:5000/auth/signup",
+        `${API_URL}/auth/signup`,
         {
           username: signup.username,
           email: signup.email,

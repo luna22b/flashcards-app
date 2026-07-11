@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FlashcardField } from "#/features/flashcards/FlashcardField";
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
+import { API_URL } from "#/api";
 
 export const Route = createFileRoute("/_authenticated/flashcards/create")({
   component: RouteComponent,
@@ -80,7 +81,7 @@ function RouteComponent() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/flashcards",
+        `${API_URL}/api/flashcards`,
         {
           flashcards: filteredFlashcards,
           title: titleAndDesc.title,

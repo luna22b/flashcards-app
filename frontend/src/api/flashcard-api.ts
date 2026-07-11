@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "#/api";
 
 export const getFlashcards = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/flashcards", {
+    const res = await axios.get(`${API_URL}/api/flashcards`, {
       withCredentials: true,
     });
     return res.data;
@@ -13,12 +14,9 @@ export const getFlashcards = async () => {
 
 export const getSpecificCard = async (setId: string) => {
   try {
-    const res = await axios.get(
-      `http://localhost:5000/api/flashcards/${setId}`,
-      {
-        withCredentials: true,
-      },
-    );
+    const res = await axios.get(`${API_URL}/api/flashcards/${setId}`, {
+      withCredentials: true,
+    });
     return res.data;
   } catch {
     return null;

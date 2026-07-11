@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
 import Navbar from "#/components/Navbar";
 import { Link } from "@tanstack/react-router";
+import { API_URL } from "#/api";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -31,7 +32,7 @@ function RouteComponent() {
 
     try {
       await axios.post(
-        "http://localhost:5000/auth/login",
+        `${API_URL}/auth/login`,
         {
           identifier: login.identifier,
           password: login.password,
