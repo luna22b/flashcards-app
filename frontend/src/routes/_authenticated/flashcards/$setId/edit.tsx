@@ -49,6 +49,7 @@ function RouteComponent() {
   );
 
   const [showDeleteWarning, setShowDeleteWarning] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   const handleAddFlashcard = () => {
     const newFlashcard = {
@@ -106,23 +107,19 @@ function RouteComponent() {
   };
 
   const handleDeleteSet = async () => {
-    try {
-      const response = await axios.delete(
-        `${API_URL}/api/flashcards/${setId}`,
-        {
-          withCredentials: true,
-        },
-      );
+    setDeleteError("");
 
-      console.log(response);
+    try {
+      await axios.delete(`${API_URL}/api/flashcards/${setId}`, {
+        withCredentials: true,
+      });
 
       navigate({ to: "/flashcards" });
     } catch (error) {
-      console.error(error);
-      alert("Unable to delete flashcard set.");
+      console.error("Unable to delete flashcard set:", error);
+      setDeleteError("Unable to delete flashcard set. Please try again.");
     }
   };
-
   return (
     <div className="min-h-screen bg-[#fcfcfc] font-[Inter]">
       <Navbar />
@@ -155,6 +152,12 @@ function RouteComponent() {
               Are you sure you want to delete this flashcard set? This action
               cannot be undone.
             </p>
+
+            {deleteError && (
+              <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                {deleteError}
+              </div>
+            )}
 
             <div className="mt-6 flex justify-center gap-4">
               <button

@@ -32,6 +32,8 @@ function RouteComponent() {
     { id: crypto.randomUUID(), front: "", back: "" },
   ]);
 
+  const [createError, setCreateError] = useState("");
+
   const handleAddFlashcard = () => {
     const newFlashcard = { id: crypto.randomUUID(), front: "", back: "" };
     setFlashcards([...flashcards, newFlashcard]);
@@ -63,6 +65,8 @@ function RouteComponent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setCreateError("");
+
     const hasValidFlashcard = flashcards.some(
       (card) => card.front.trim() !== "" && card.back.trim() !== "",
     );
@@ -80,7 +84,7 @@ function RouteComponent() {
       }));
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${API_URL}/api/flashcards`,
         {
           flashcards: filteredFlashcards,
@@ -93,10 +97,9 @@ function RouteComponent() {
       );
 
       navigate({ to: "/flashcards" });
-
-      console.log(response);
     } catch (error) {
       console.error(error);
+      setCreateError("Unable to create flashcard set. Please try again.");
     }
   };
 
@@ -163,6 +166,12 @@ function RouteComponent() {
               </li>
             ))}
           </ul>
+
+          {createError && (
+            <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+              {createError}
+            </div>
+          )}
 
           <button
             onClick={handleAddFlashcard}
