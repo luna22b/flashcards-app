@@ -86,7 +86,7 @@ function RouteComponent() {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_URL}/api/flashcards/${setId}`,
         {
           title: titleAndDesc.title,
@@ -97,8 +97,6 @@ function RouteComponent() {
           withCredentials: true,
         },
       );
-
-      console.log(response);
 
       navigate({ to: "/flashcards" });
     } catch (error) {
