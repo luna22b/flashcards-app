@@ -18,15 +18,11 @@ const NavElements = ({ onLogout }: Props) => {
           Logout
         </button>
       ) : (
-        <>
-          <button className="bg-[#015d67] text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
-            <Link to="/login">Log in</Link>
+        <div>
+          <button className="cursor-pointer bg-[#262626] text-white rounded-lg px-4 py-2 ml-2">
+            <Link to="/login">Sign in</Link>
           </button>
-
-          <button className="bg-black text-white w-18 h-10 rounded-xl cursor-pointer border border-black">
-            <Link to="/signup">Sign up</Link>
-          </button>
-        </>
+        </div>
       )}
     </div>
   );

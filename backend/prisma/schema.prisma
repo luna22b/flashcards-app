@@ -34,5 +34,5 @@ model Flashcard {
   createdAt   DateTime     @default(now())
 
   setId       String
-  set         FlashcardSet @relation(fields: [setId], references: [id])
+  set       FlashcardSet @relation(fields: [setId], references: [id], onDelete: Cascade)
 }

@@ -1,17 +1,29 @@
 import HomeCards from "./HomeCards";
+import { Link } from "@tanstack/react-router";
 
 const MainText = () => {
   return (
-    <div>
-      <div className="pt-25 h-150 bg-[#F4F3F2]">
-        <div className="font-bold flex justify-center text-6xl max-w-[75em] px-10 flex-col items-center gap-2">
-          <div className="text-black">Notes and Flashcards</div>
-          <div className="text-[#015d67]">that Learn with You.</div>
-        </div>
-        <div className="flex justify-center mt-10 text-xl px-10">
-          Begin studying faster using AI generated flashcards upon uploading a
-          document
-        </div>
+    <div className="mx-auto mt-18 max-w-6xl px-4 py-10 font-[Inter]">
+      <div className="flex flex-col items-center text-center">
+        <h1 className="max-w-2xl text-5xl leading-tight font-semibold">
+          Notes and Flashcards{" "}
+          <span className="text-[#015d67]">that Learn with You.</span>
+        </h1>
+
+        <p className="mt-5 max-w-2xl text-xl text-[#737373]">
+          Start studying faster by creating and organizing your own flashcards
+          in seconds.
+        </p>
+
+        <Link
+          to="/flashcards/create"
+          className="mt-8 rounded-lg bg-black px-8 py-3 font-semibold text-white transition hover:bg-[#222]"
+        >
+          Create Flashcards Now
+        </Link>
+      </div>
+
+      <div className="mt-14">
         <HomeCards />
       </div>
     </div>

@@ -15,6 +15,12 @@ export const Route = createFileRoute("/")({
     }
   },
 
+  pendingComponent: () => (
+    <div className="flex min-h-screen items-center justify-center font-[Inter]">
+      Checking account...
+    </div>
+  ),
+
   component: Home,
 });
 

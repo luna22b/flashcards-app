@@ -21,7 +21,6 @@ export const logout = async () => {
         withCredentials: true,
       },
     );
-
     return res.data;
   } catch {
     return null;

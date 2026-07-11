@@ -10,7 +10,11 @@ const app = express();
 // makes it so the backend and the frontend can connect
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:4173",
+      process.env.FRONTEND_URL!,
+    ],
     credentials: true,
   }),
 );

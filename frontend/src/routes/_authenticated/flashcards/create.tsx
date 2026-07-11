@@ -9,7 +9,6 @@ export const Route = createFileRoute("/_authenticated/flashcards/create")({
   component: RouteComponent,
 });
 
-// interfaces
 interface Flashcard {
   id: string;
   front: string;
@@ -27,20 +26,16 @@ function RouteComponent() {
     description: "",
   });
 
-  // initialized with two flashcards at the start so that the user has two flashcards to work with
-  // automatically
   const [flashcards, setFlashcards] = useState<Flashcard[]>([
     { id: crypto.randomUUID(), front: "", back: "" },
     { id: crypto.randomUUID(), front: "", back: "" },
   ]);
 
-  // handles the adding of a flashcard by adding a new object to the state
   const handleAddFlashcard = () => {
     const newFlashcard = { id: crypto.randomUUID(), front: "", back: "" };
     setFlashcards([...flashcards, newFlashcard]);
   };
 
-  // handles updating in the other file by lifting state up
   const handleUpdate = (
     id: string,
     field: "front" | "back",
@@ -53,15 +48,29 @@ function RouteComponent() {
     );
   };
 
-  // handles deletion by filtering the id of the card that was clicked on
   const handleDeleteFlashcard = (id: string) => {
-    setFlashcards((c) => c.filter((card) => card.id !== id));
+    if (flashcards.length === 1) {
+      alert("A flashcard set must contain at least one flashcard.");
+      return;
+    }
+
+    setFlashcards((cards) => cards.filter((card) => card.id !== id));
   };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const hasValidFlashcard = flashcards.some(
+      (card) => card.front.trim() !== "" && card.back.trim() !== "",
+    );
+
+    if (!hasValidFlashcard) {
+      alert("Please enter a term and definition for at least one flashcard.");
+      return;
+    }
+
     const filteredFlashcards = flashcards
       .filter((item) => item.front.trim() !== "" && item.back.trim() !== "")
       .map(({ front, back }) => ({
@@ -81,7 +90,9 @@ function RouteComponent() {
           withCredentials: true,
         },
       );
+
       navigate({ to: "/flashcards" });
+
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -89,31 +100,43 @@ function RouteComponent() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#fcfcfc] font-[Inter]">
       <Navbar />
 
-      <div className="mt-6 font-bold text-xl flex justify-center">
-        Create a new flashcard set
-      </div>
+      <div className="mx-auto max-w-4xl px-4 py-10">
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold">Create a New Flashcard Set</h1>
 
-      <div className="flex flex-col items-center mt-10">
-        <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          <input
-            type="textarea"
+          <p className="mt-3 text-lg text-[#737373]">
+            Add a title, description, and start building your flashcards.
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto mt-10 flex max-w-3xl flex-col"
+        >
+          <textarea
             value={titleAndDesc.title}
+            maxLength={80}
             onChange={(e) =>
               setTitleAndDesc((prev) => ({
                 ...prev,
                 title: e.target.value,
               }))
             }
+            required
             placeholder="Title"
-            className="w-[21em] border mb-2 rounded-lg p-3 min-h-10 max-h-50 overflow-hidden resize-none"
+            className="resize-none rounded-xl border border-[#ddd] bg-white p-4 text-lg shadow-sm outline-none transition focus:border-[#015d67]"
           />
 
-          <input
-            type="textarea"
+          <div className="mt-2 text-right text-sm text-[#737373]">
+            {titleAndDesc.title.length}/80
+          </div>
+
+          <textarea
             value={titleAndDesc.description}
+            maxLength={300}
             onChange={(e) =>
               setTitleAndDesc((prev) => ({
                 ...prev,
@@ -121,10 +144,14 @@ function RouteComponent() {
               }))
             }
             placeholder="Add a description..."
-            className="w-[21em] border mb-2 rounded-lg p-3 field-sizing-content"
+            className="mt-4 resize-none rounded-xl border border-[#ddd] bg-white p-4 shadow-sm outline-none transition focus:border-[#015d67]"
           />
 
-          <ul>
+          <div className="mt-2 text-right text-sm text-[#737373]">
+            {titleAndDesc.description.length}/300
+          </div>
+
+          <ul className="mt-8 space-y-6">
             {flashcards.map((card) => (
               <li key={card.id}>
                 <FlashcardField
@@ -138,15 +165,15 @@ function RouteComponent() {
 
           <button
             onClick={handleAddFlashcard}
-            className="mt-4 cursor-pointer"
             type="button"
+            className="mt-8 cursor-pointer rounded-lg border border-[#ddd] bg-white py-3 font-semibold shadow-sm transition hover:bg-[#f7f7f7]"
           >
-            Add new flashcard
+            + Add Another Flashcard
           </button>
 
           <button
             type="submit"
-            className="border border-green-400 mt-5 px-3 py-1 rounded cursor-pointer"
+            className="mt-5 cursor-pointer rounded-lg bg-black py-3 font-semibold text-white transition hover:bg-[#222]"
           >
             Save & Continue
           </button>

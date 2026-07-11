@@ -63,3 +63,54 @@ export const userCards = {
     return getCard;
   },
 };
+
+export const editSet = {
+  async editSpecificSet(
+    userId: string,
+    setId: string,
+    title: string,
+    description: string,
+    flashcards: { front: string; back: string }[],
+  ) {
+    const updatedSet = await prisma.flashcardSet.update({
+      where: {
+        id: setId,
+        userId,
+      },
+      data: {
+        title,
+        description,
+      },
+    });
+
+    await prisma.flashcard.deleteMany({
+      where: {
+        setId,
+      },
+    });
+
+    await prisma.flashcard.createMany({
+      data: flashcards.map((card) => ({
+        front: card.front,
+        back: card.back,
+        setId,
+      })),
+    });
+
+    return updatedSet;
+  },
+};
+
+export const deleteSet = {
+  async deleteSpecificSet(userId: string, setId: string) {
+    console.log(setId, userId);
+    const deleteSet = await prisma.flashcardSet.delete({
+      where: {
+        id: setId,
+        userId,
+      },
+    });
+
+    return deleteSet;
+  },
+};

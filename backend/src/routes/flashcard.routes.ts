@@ -3,6 +3,8 @@ import { authenticateUser } from "../middleware/authenticateUser";
 import { NewFlashcardSet } from "../services/flashcard.service";
 import { getFlashcardSets } from "../services/flashcard.service";
 import { userCards } from "../services/flashcard.service";
+import { editSet } from "../services/flashcard.service";
+import { deleteSet } from "../services/flashcard.service";
 
 const router = Router();
 
@@ -16,11 +18,8 @@ router.post(
         userId: req.user!,
       });
 
-      console.log(set);
-
       res.json(set);
     } catch (err) {
-      console.error(err);
       res.status(400).json({
         message: "Failed to create set",
         error: err,
@@ -53,7 +52,48 @@ router.get(
       res.json(getSpecificSet);
     } catch (err) {
       res.status(404).json({ message: "Flashcard not found." });
-      console.log(err);
+    }
+  },
+);
+
+router.put(
+  "/flashcards/:setId",
+  authenticateUser,
+  async (req: Request, res: Response) => {
+    try {
+      const { setId } = req.params as { setId: string };
+      const { title, description, flashcards } = req.body;
+
+      const updatedSet = await editSet.editSpecificSet(
+        req.user!,
+        setId,
+        title,
+        description,
+        flashcards,
+      );
+
+      res.json(updatedSet);
+    } catch (err) {
+      res.status(500).json({ message: "Unable to update flashcard set." });
+    }
+  },
+);
+
+router.delete(
+  "/flashcards/:setId",
+  authenticateUser,
+  async (req: Request, res: Response) => {
+    try {
+      const { setId } = req.params as { setId: string };
+
+      const deletedFlashcardSet = await deleteSet.deleteSpecificSet(
+        req.user!,
+        setId,
+      );
+
+      res.json(deletedFlashcardSet);
+    } catch (err) {
+      res.status(500).json({ message: "Unable to delete flashcard set." });
     }
   },
 );

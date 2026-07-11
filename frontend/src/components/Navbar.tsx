@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import { logout } from "#/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
-import { Bars3Icon } from "@heroicons/react/24/solid";
 import NavElements from "./NavElements";
+import { Sprout } from "lucide-react";
 
 const Navbar = () => {
   // used queries to check if the user is logged out or not. if they are, display the login button.
@@ -17,7 +17,7 @@ const Navbar = () => {
       queryKey: ["auth"],
     });
 
-    navigate({ to: "/login" });
+    navigate({ to: "/" });
   };
 
   const handleClick = () => {
@@ -25,24 +25,24 @@ const Navbar = () => {
   };
 
   return (
-    <div className="border-b border-b-[#ddd]">
-      <div className="h-20 flex justify-between items-center max-w-[85em] mx-auto px-3">
+    <nav>
+      <div className="max-w-6xl mx-auto border-b border-b-[#e0e0e0] pb-4 px-4 py-6 flex justify-between items-center">
         <div className="flex gap-5">
           <div
-            className="font-semibold text-black cursor-pointer"
+            className="text-xl cursor-pointer font-semibold flex gap-3 items-center"
             onClick={handleClick}
           >
-            Study
+            <Sprout />
+            luma
           </div>
         </div>
         <div>
-          <Bars3Icon className="sm:hidden size-6" />
-          <div className="hidden sm:flex gap-4">
+          <div className="sm:flex gap-4">
             <NavElements onLogout={handleLogout} />
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

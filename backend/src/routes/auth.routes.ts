@@ -15,8 +15,8 @@ router.post("/signup", async (req: Request, res: Response) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -45,8 +45,8 @@ router.post("/login", async (req: Request, res: Response) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -61,8 +61,8 @@ router.post("/login", async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
-      message: "Email or username already exists. Please try again.",
+    res.status(401).json({
+      message: "Invalid username/email or password.",
     });
   }
 });
@@ -84,8 +84,8 @@ router.post("/logout", async (req: Request, res: Response) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: false, // MAKE SURE TO CHANGE THIS BACK AFTERWARDS! ------------------------
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
 
     return res.status(200).json({
