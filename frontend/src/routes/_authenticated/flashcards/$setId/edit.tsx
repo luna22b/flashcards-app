@@ -5,6 +5,7 @@ import { getSpecificCard } from "#/api/flashcard-api";
 import { useState } from "react";
 import axios from "axios";
 import { Trash2 } from "lucide-react";
+import { API_URL } from "#/api";
 
 export const Route = createFileRoute("/_authenticated/flashcards/$setId/edit")({
   loader: async ({ params }) => {
@@ -85,7 +86,7 @@ function RouteComponent() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/flashcards/${setId}`,
+        `${API_URL}/api/flashcards/${setId}`,
         {
           title: titleAndDesc.title,
           description: titleAndDesc.description,
@@ -107,7 +108,7 @@ function RouteComponent() {
   const handleDeleteSet = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/flashcards/${setId}`,
+        `${API_URL}/api/flashcards/${setId}`,
         {
           withCredentials: true,
         },
